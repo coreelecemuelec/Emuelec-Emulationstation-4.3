@@ -182,21 +182,9 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	}
 	else
 	{
-			addEntry(_("1 - LZ GAME SETTINGS").c_str(), true, [this] { openGamesSettings(); }, "iconGames");
-		addEntry(_("2 - LZ SCRAPER").c_str(), true, [this] { openScraperSettings(); }, "iconScraper");		
-		addEntry(_("3 - LZ USER INTERFACE SETTINGS").c_str(), true, [this] { openUISettings(); }, "iconUI");
-                addEntry(_("4 - LZ SMART TV MODE G-STICK GAMES"), false, [window] {
-			window->pushGui(new GuiMsgBox(window, _("REALLY REBOOT FROM NAND?"), _("YES"),
-				[] {
-				Scripting::fireEvent("quit", "nand");
-				runSystemCommand("rebootfromnand", "", nullptr);
-				runSystemCommand("sync", "", nullptr);
-				runSystemCommand("systemctl reboot", "", nullptr);
-				quitES(QuitMode::QUIT);
-			}, _("NO"), nullptr));
-		}, "iconAdvanced");
-
-		addEntry(_("5 - LZ DESLIGAR G-STICK"), false, [window] {
+		addEntry(_("1 - LZ GAME SETTINGS").c_str(), true, [this] { openGamesSettings_batocera(); }, "iconGames");
+		addEntry(_("2 - LZ USER INTERFACE SETTINGS").c_str(), true, [this] { openUISettings(); }, "iconUI");
+		addEntry(_("4 - LZ DESLIGAR G-STICK"), false, [window] {
 		window->pushGui(new GuiMsgBox(window, _("REALLY SHUTDOWN?"), 
 			_("YES"), [] { quitES(QuitMode::SHUTDOWN); }, 
 			_("NO"), nullptr));
