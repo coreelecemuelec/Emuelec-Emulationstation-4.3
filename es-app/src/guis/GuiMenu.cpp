@@ -97,7 +97,7 @@
 #define controllers_settings_label		gettext_controllers_and_bluetooth_settings
 #endif
 
-GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(window, _("MAIN MENU").c_str()), mVersion(window)
+GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(window, _("LZ RETRO GAME STICK - 9/SET/2023 V-8").c_str()), mVersion(window)
 {
 	// MAIN MENU
 	bool isFullUI = UIModeController::getInstance()->isUIModeFull();
@@ -129,7 +129,7 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 #endif
 
 #ifdef _ENABLEEMUELEC
-		addEntry(_("EMUELEC SETTINGS").c_str(), true, [this] { openEmuELECSettings(); }, "iconEmuelec"); /* < emuelec */
+		addEntry(_("LZ RETRO G-STICK CONFIG").c_str(), true, [this] { openEmuELECSettings(); }, "iconEmuelec"); /* < emuelec */
 #endif
 
 	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::RETROACHIVEMENTS) &&
@@ -141,9 +141,9 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	if (isFullUI)
 	{
 #if !defined(WIN32) || defined(_DEBUG)
-		addEntry(_("GAME SETTINGS").c_str(), true, [this] { openGamesSettings_batocera(); }, "iconGames");
-		addEntry(controllers_settings_label.c_str(), true, [this] { openControllersSettings_batocera(); }, "iconControllers");
-		addEntry(_("UI SETTINGS").c_str(), true, [this] { openUISettings(); }, "iconUI");
+		addEntry(_("LZ G-STICK SETTINGS").c_str(), true, [this] { openGamesSettings(); }, "iconGames");
+		addEntry(_("CONTROLLERS SETTINGS").c_str(), true, [this] { openControllersSettings_batocera(); }, "iconControllers");
+		addEntry(_("USER INTERFACE SETTINGS").c_str(), true, [this] { openUISettings(); }, "iconUI");
 		addEntry(_("GAME COLLECTION SETTINGS").c_str(), true, [this] { openCollectionSystemSettings(); }, "iconAdvanced");
 		addEntry(_("SOUND SETTINGS").c_str(), true, [this] { openSoundSettings(); }, "iconSound");
 
