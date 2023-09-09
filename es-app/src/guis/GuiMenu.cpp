@@ -142,7 +142,7 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	{
 #if !defined(WIN32) || defined(_DEBUG)
 		addEntry(_("LZ G-STICK SETTINGS").c_str(), true, [this] { openGamesSettings_batocera(); }, "iconGames");
-		addEntry(_("CONTROLLERS SETTINGS".c_str(), true, [this] { openControllersSettings_batocera(); }, "iconControllers");
+		addEntry(controllers_settings_label.c_str(), true, [this] { openControllersSettings_batocera(); }, "iconControllers");
 		addEntry(_("UI SETTINGS").c_str(), true, [this] { openUISettings(); }, "iconUI");
 		addEntry(_("GAME COLLECTION SETTINGS").c_str(), true, [this] { openCollectionSystemSettings(); }, "iconAdvanced");
 		addEntry(_("SOUND SETTINGS").c_str(), true, [this] { openSoundSettings(); }, "iconSound");
@@ -182,10 +182,27 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	}
 	else
 	{
-		addEntry(_("INFORMATION").c_str(), true, [this] { openSystemInformations_batocera(); }, "iconSystem");
-		addEntry(_("UNLOCK UI MODE").c_str(), true, [this] { exitKidMode(); }, "iconAdvanced");
-	}
+		addEntry(_("1 - LZ GAME SETTINGS").c_str(), true, [this] { openGamesSettings(); }, "iconGames");
+		addEntry(_("2 - LZ SCRAPER").c_str(), true, [this] { openScraperSettings(); }, "iconScraper");		
+		addEntry(_("3 - LZ USER INTERFACE SETTINGS").c_str(), true, [this] { openUISettings(); }, "iconUI");
+                addEntry(_("4 - LZ SMART TV MODE G-STICK GAMES"), false, [window] {
+			window->pushGui(new GuiMsgBox(window, _("REALLY REBOOT FROM NAND?"), _("YES"),
+				[] {
+				Scripting::fireEvent("quit", "nand");
+				runSystemCommand("rebootfromnand", "", nullptr);
+				runSystemCommand("sync", "", nullptr);
+				runSystemCommand("systemctl reboot", "", nullptr);
+				quitES(QuitMode::QUIT);
+			}, _("NO"), nullptr));
+		}, "iconAdvanced");
 
+		addEntry(_("5 - LZ DESLIGAR G-STICK"), false, [window] {
+		window->pushGui(new GuiMsgBox(window, _("REALLY SHUTDOWN?"), 
+			_("YES"), [] { quitES(QuitMode::SHUTDOWN); }, 
+			_("NO"), nullptr));
+	}, "iconShutdown");
+	}
+	
 #ifdef WIN32
 	addEntry(_("QUIT").c_str(), !Settings::getInstance()->getBool("ShowOnlyExit"), [this] {openQuitMenu_batocera(); }, "iconQuit");
 #else
