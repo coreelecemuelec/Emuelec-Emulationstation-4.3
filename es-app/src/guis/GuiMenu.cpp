@@ -863,7 +863,7 @@ void GuiMenu::addVersionInfo()
 		else
 #endif
 #ifdef _ENABLEEMUELEC	
-		mVersion.setText("EMUELEC ES V" + ApiSystem::getInstance()->getVersion() + buildDate + " IP:" + getShOutput(R"(/usr/bin/emuelec-utils getip)"));
+		mVersion.setText("LZ Retro Game V.8" + ApiSystem::getInstance()->getVersion() + buildDate + " IP:" + getShOutput(R"(/usr/bin/emuelec-utils getip)"));
 #else
 		mVersion.setText("BATOCERA.LINUX ES V" + ApiSystem::getInstance()->getVersion() + buildDate);
 #endif
@@ -4327,28 +4327,11 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 			auto sname = AudioManager::getInstance()->getSongName();
 			if (!sname.empty())
 			{
-				s->addWithDescription(_("SKIP TO NEXT SONG"), _("LISTENING NOW") + " : " + sname, nullptr, [s, window]
-				{
-					Window* w = window;
-					AudioManager::getInstance()->playRandomMusic(false);
-					delete s;
-					openQuitMenu_batocera_static(w, true, false);
-				}, "iconSound");
+				
 			}
 		}
 
-		s->addEntry(_("LAUNCH SCREENSAVER"), false, [s, window]
-		{
-			Window* w = window;
-			window->postToUiThread([w]()
-			{
-				w->startScreenSaver();
-				w->renderScreenSaver();
-			});
-			delete s;
-
-		}, "iconScraper", true);
-		
+				
 #if WIN32	
 #define BATOCERA_MANUAL_FILE Utils::FileSystem::getEsConfigPath() + "/notice.pdf"
 #else
@@ -4390,17 +4373,7 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 		}, _("NO"), nullptr));
 	}, "iconControllers");
 	
-	s->addEntry(_("REBOOT FROM NAND"), false, [window] {
-		window->pushGui(new GuiMsgBox(window, _("REALLY REBOOT FROM NAND?"), _("YES"),
-			[] {
-			Scripting::fireEvent("quit", "nand");
-			runSystemCommand("rebootfromnand", "", nullptr);
-			runSystemCommand("sync", "", nullptr);
-			runSystemCommand("systemctl reboot", "", nullptr);
-			quitES(QuitMode::QUIT);
-		}, _("NO"), nullptr));
-	}, "iconAdvanced");
-
+	
 #endif
 
 	if (quickAccessMenu)
