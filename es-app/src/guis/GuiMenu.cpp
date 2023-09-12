@@ -4314,17 +4314,41 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 	}
 #endif
 
-	auto s = new GuiSettings(window, (quickAccessMenu ? _("") : _("LZ STICK EXIT")).c_str());
+	auto s = new GuiSettings(window, (quickAccessMenu ? _("QUICK ACCESS") : _("QUIT")).c_str());
 	s->setCloseButton("select");
 
 	if (quickAccessMenu)
 	{
-		
-				
+		s->addGroup(_("QUICK ACCESS"));
+
+		// Don't like one of the songs? Press next
+		if (AudioManager::getInstance()->isSongPlaying())
+		{
+			auto sname = AudioManager::getInstance()->getSongName();
+			if (!sname.empty())
+			{
+				s->addWithDescription(_("SKIP TO NEXT SONG"), _("LISTENING NOW") + " : " + sname, nullptr, [s, window]
+				{
+					Window* w = window;
+					AudioManager::getInstance()->playRandomMusic(false);
+					delete s;
+					openQuitMenu_batocera_static(w, true, false);
+				}, "iconSound");
 			}
 		}
 
-				
+		s->addEntry(_("LAUNCH SCREENSAVER"), false, [s, window]
+		{
+			Window* w = window;
+			window->postToUiThread([w]()
+			{
+				w->startScreenSaver();
+				w->renderScreenSaver();
+			});
+			delete s;
+
+		}, "iconScraper", true);
+		
 #if WIN32	
 #define BATOCERA_MANUAL_FILE Utils::FileSystem::getEsConfigPath() + "/notice.pdf"
 #else
@@ -4366,7 +4390,17 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 		}, _("NO"), nullptr));
 	}, "iconControllers");
 	
-	
+	s->addEntry(_("REBOOT FROM NAND"), false, [window] {
+		window->pushGui(new GuiMsgBox(window, _("REALLY REBOOT FROM NAND?"), _("YES"),
+			[] {
+			Scripting::fireEvent("quit", "nand");
+			runSystemCommand("rebootfromnand", "", nullptr);
+			runSystemCommand("sync", "", nullptr);
+			runSystemCommand("systemctl reboot", "", nullptr);
+			quitES(QuitMode::QUIT);
+		}, _("NO"), nullptr));
+	}, "iconAdvanced");
+
 #endif
 
 	if (quickAccessMenu)
