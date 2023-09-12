@@ -4314,19 +4314,12 @@ void GuiMenu::openQuitMenu_batocera_static(Window *window, bool quickAccessMenu,
 	}
 #endif
 
-	auto s = new GuiSettings(window, (quickAccessMenu ? _("QUICK ACCESS") : _("QUIT")).c_str());
+	auto s = new GuiSettings(window, (quickAccessMenu ? _("") : _("LZ STICK EXIT")).c_str());
 	s->setCloseButton("select");
 
 	if (quickAccessMenu)
 	{
-		s->addGroup(_("QUICK ACCESS"));
-
-		// Don't like one of the songs? Press next
-		if (AudioManager::getInstance()->isSongPlaying())
-		{
-			auto sname = AudioManager::getInstance()->getSongName();
-			if (!sname.empty())
-			{
+		
 				
 			}
 		}
