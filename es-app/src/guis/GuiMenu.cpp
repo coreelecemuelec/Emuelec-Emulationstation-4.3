@@ -260,7 +260,7 @@ void GuiMenu::openEmuELECSettings()
 			std::string selectedVideoMode = emuelec_video_mode->getSelected();
 		if (emuelec_video_mode->getSelected() != "-- AUTO-DETECTED RESOLUTIONS --") { 
 			if (emuelec_video_mode->getSelected() != "Custom") {
-			std::string msg = _("You are about to set EmuELEC resolution to:") +"\n" + selectedVideoMode + "\n";
+			std::string msg = _("You are about to set LZ STICK resolution to:") +"\n" + selectedVideoMode + "\n";
 			msg += _("Do you want to proceed ?");
 		
 			window->pushGui(new GuiMsgBox(window, msg,
@@ -574,14 +574,14 @@ void GuiMenu::openDangerZone(Window* mWindow, std::string configName)
          });
 #endif
 
-    dangerZone->addEntry(_("BACKUP EMUELEC CONFIGS"), true, [mWindow] { 
+    dangerZone->addEntry(_("BACKUP LZ STICK CONFIGS"), true, [mWindow] { 
     mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING THIS WILL RESTART EMULATIONSTATION!\n\nAFTER THE SCRIPT IS DONE REMEMBER TO COPY THE FILE /storage/roms/backup/ee_backup_config.tar.gz TO SOME PLACE SAFE OR IT WILL BE DELETED ON NEXT REBOOT!\n\nBACKUP CURRENT CONFIG AND RESTART?"), _("YES"),
 				[] { 
 				runSystemCommand("systemd-run /usr/bin/emuelec-utils ee_backup backup", "", nullptr);
 				}, _("NO"), nullptr));
      });
 
-    dangerZone->addEntry(_("RESET EMUELEC SCRIPTS AND BINARIES TO DEFAULT"), true, [mWindow] { 
+    dangerZone->addEntry(_("RESET LZ STICK  SCRIPTS AND BINARIES TO DEFAULT"), true, [mWindow] { 
     mWindow->pushGui(new GuiMsgBox(mWindow, _("WARNING: SYSTEM WILL RESET SCRIPTS AND BINARIES !\nUPDATE, DOWNLOADS, THEMES, BLUETOOTH PAIRINGS AND ROMS FOLDER WILL NOT BE AFFECTED.\n\nRESET SCRIPTS AND BINARIES TO DEFAULT AND RESTART?"), _("YES"),
 				[] { 
 				runSystemCommand("systemd-run /usr/bin/emuelec-utils clearconfig EMUS", "", nullptr);
@@ -2204,7 +2204,7 @@ void GuiMenu::openSystemSettings_batocera()
 		{	
 #ifdef _ENABLEEMUELEC
 			std::string selectedLanguage = language_choice->getSelected();
-			std::string msg = _("You are about to set EmuELEC Language to:") +"\n" +  selectedLanguage + "\n";
+			std::string msg = _("You are about to set LZ STICK Language to:") +"\n" +  selectedLanguage + "\n";
 			msg += _("Emulationstation will restart")+"\n";
 			msg += _("Do you want to proceed ?");
 			window->pushGui(new GuiMsgBox(window, msg, _("YES"), [selectedLanguage] {
